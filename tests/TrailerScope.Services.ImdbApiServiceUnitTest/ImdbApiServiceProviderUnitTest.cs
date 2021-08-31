@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using FluentAssertions;
+using NUnit.Framework.Constraints;
 using TrailerScope.Services.ImdbApiService;
 
 namespace TrailerScope.Services.ImdbApiServiceUnitTest
@@ -39,11 +41,16 @@ namespace TrailerScope.Services.ImdbApiServiceUnitTest
         }
         
         [Test]
-        public void ServiceProvider_TestOK()
+        public async Task ServiceProvider_FindBy()
         {
+            var movie_title = "spider-man";
+            
             var provider = new ImdbApiServiceProvider(this.api_key);
-            var result = provider.Test();
-            result.Should().BeTrue();
+            var result = await provider.GetMoviesByTitleAsync(movie_title);
+            result.IsSuccess.Should().BeTrue();
+            
+            result.Value.Should()
+                .Contain(x => x.Title.Contains("spider-man", StringComparison.InvariantCultureIgnoreCase));
         }
 
     }
