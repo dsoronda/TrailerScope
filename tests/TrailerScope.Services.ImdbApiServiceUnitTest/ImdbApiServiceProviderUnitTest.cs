@@ -45,12 +45,12 @@ namespace TrailerScope.Services.ImdbApiServiceUnitTest
         {
             var movie_title = "spider-man";
             
-            var provider = new ImdbApiServiceProvider(this.api_key);
-            var result = await provider.GetMoviesByTitleAsync(movie_title);
+            var provider = new MovieInfoServiceProvider(this.api_key);
+            var result = await provider.SearchByTitleAsync(movie_title);
             result.IsSuccess.Should().BeTrue();
             
             result.Value.Should()
-                .Contain(x => x.Title.Contains("spider-man", StringComparison.InvariantCultureIgnoreCase));
+                .Contain(x => x.Title.Contains(movie_title, StringComparison.InvariantCultureIgnoreCase));
         }
 
     }

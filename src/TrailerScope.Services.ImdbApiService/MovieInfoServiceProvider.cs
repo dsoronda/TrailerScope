@@ -11,27 +11,25 @@ using System.Linq;
 
 namespace TrailerScope.Services.ImdbApiService
 {
-    public class ImdbApiServiceProvider : IImdbApiService
+    public class MovieInfoServiceProvider : IMovieInfoService
     {
         private readonly string _apiKey;
 
-        public ImdbApiServiceProvider(string apiKey)
+        public MovieInfoServiceProvider(string apiKey)
         {
             _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
         }
 
         private ApiLib GetApiLib() => new ApiLib(_apiKey);
 
-        public async Task<Result<IEnumerable<MovieInfo>>> GetMoviesByTitleAsync(string title)
+        public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync(string title)
         {
             // throw new NotImplementedException();          
             var apiLib = GetApiLib();
 
             // Title Data
-            SearchData data = await apiLib.SearchTitleAsync(title);
-            if (!string.IsNullOrWhiteSpace(data.ErrorMessage))
-                return Result.Fail<IEnumerable<MovieInfo>>(data.ErrorMessage);
-            // return data;
+            var data = await apiLib.SearchTitleAsync(title);
+            if (!string.IsNullOrWhiteSpace(data.ErrorMessage)) return Result.Fail<IEnumerable<MovieInfo>>(data.ErrorMessage);
 
             var list = data.ToMovieInfoList();
             return Result.Ok<IEnumerable<MovieInfo>>(list);
@@ -42,9 +40,9 @@ namespace TrailerScope.Services.ImdbApiService
     {
         public static IEnumerable<MovieInfo> ToMovieInfoList(this SearchData data)
         {
-            // TODO : implement this
             return data.Results.Select(x => new MovieInfo()
             {
+                ImdbId = x.Id,
                 Title = x.Title,
                 Description = x.Description,
                 Poster = x.Image,
