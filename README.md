@@ -21,7 +21,7 @@ Bonus
 
     Add the option to share trailers on social networks;
     Make sure your website is secure and super fast;
-        - ? secure how ? require API key for requests or ?
+        - secure how ? require API key for requests or ?
     Create a contact form to request a trailer for a movie;
         - this should be on frontend with API backend
     Surprise us! Build something we haven’t thought of or what you think is a valuable addition;

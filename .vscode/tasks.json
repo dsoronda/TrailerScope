@@ -6,6 +6,9 @@
         {
             "label": "build",
             "command": "dotnet",
+            
+            // for linux
+            //"command": "~/dotnet/dotnet",
             "type": "shell",
             "args": [
                 "build",
