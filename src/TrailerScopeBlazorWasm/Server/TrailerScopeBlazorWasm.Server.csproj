@@ -3,10 +3,16 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>TrailerScopeBlazorWasm.Server-A671B47D-9F79-4069-9391-AF4F3EB57DFE</UserSecretsId>
+
+
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
+
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.9" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
   </ItemGroup>
 
   <ItemGroup>

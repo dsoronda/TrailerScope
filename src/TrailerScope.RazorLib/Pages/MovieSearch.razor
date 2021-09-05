@@ -1,4 +1,6 @@
 @page "/movie/search"
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 @using TrailerScope.Contracts.Services
 @using TrailerScope.Domain.Entities
 
@@ -6,28 +8,36 @@
 
 
 <div style="max-width: 600px;">
-	<MudCard>
-		<MudCardContent>
-			<MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-				<MudTextField T="string" Label="Movie title" Required="true" @bind-Value="SearchText" RequiredError="Movie title is required!"/>
-			</MudForm>
-		</MudCardContent>
-		<MudCardActions>
-			<MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" @onclick="SearchMovies">Search</MudButton>
-
-			@* <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Register</MudButton> *@
-		</MudCardActions>
-	</MudCard>
+	<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+		<DataAnnotationsValidator />
+		<MudCard>
+			<MudCardContent>
+				<MudTextField T="string" Label="Movie title" Required="true" @bind-Value="model.SearchText" RequiredError="Movie title is required!" />
+			</MudCardContent>
+			<MudCardActions>
+				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
+			</MudCardActions>
+		</MudCard>
+		<MudText Typo="Typo.body2" Align="Align.Center" Class="my-4">
+			Fill out the form correctly to see the success message.
+		</MudText>
+	</EditForm>
 
 </div>
-<br/>
+<br />
 
 @if (HaveMovies)
 {
 	<div>
 		<h3>Result movies</h3>
+
 		<ul>
-			<li>movie</li>
+
+			@foreach (var movieInfo in movies)
+			{
+				<li>@movieInfo.Title (@movieInfo.ReleaseYear) - @movieInfo.Description</li>
+			}
+
 		</ul>
 	</div>
 }
@@ -35,31 +45,50 @@
 
 @code {
 
-	[Inject]
-	IMovieInfoService _searchService { get; set; }
+	//[Inject] IMovieInfoService _searchService { get; set; }
+	[Inject] IMovieInfoService _searchService { get; set; }
+	[Inject] ILogger<MovieSearch> logger { get; set; }
 
-	public string SearchText { get; set; }
+	//[Required,MinLength(1)] internal string SearchText { get; set; }
+	internal SearchQuery model = new();
 
-	bool success;
-	string[] errors = {};
+	bool formIsValid;
+	string[] errors = { };
 	MudForm form;
 	IEnumerable<MovieInfo> movies;
 	bool HaveMovies => movies != null && movies!.Any();
 
-	internal async Task SearchMovies()
+	private async Task OnValidSubmit(EditContext context)
 	{
-		if (!form.IsValid) return;
+		await SearchMovies(model.SearchText);
+		//success = true;
+		StateHasChanged();
+	}
 
-		var result = await _searchService.SearchByTitleAsync(SearchText);
+	internal async Task SearchMovies(string title)
+	{
+		logger.LogInformation("got search request for title: {SearchText}", title);
+		//if (!form.IsValid) return;
+
+		var result = await _searchService.SearchByTitleAsync(title);
+
+		logger.LogInformation("got response : {IsSuccess}", result.IsSuccess, result.Value);
+
 		if (result.IsFailed)
 		{
-			success = false;
+			formIsValid = false;
 			errors = result.Errors.Select(x => x.Message).ToArray();
+			logger.LogInformation("got reasons: {Reasons}", result.Reasons);
+
 			return;
 		}
 
 		movies = result.Value;
 	}
 
+	internal class SearchQuery
+	{
+		[Required, MinLength(1)] internal string SearchText { get; set; }
+	}
 
 }

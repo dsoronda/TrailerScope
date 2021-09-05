@@ -11,29 +11,49 @@ using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
 using TrailerScope.Contracts.Services;
 using TrailerScopeBlazorWasm.Client.Services;
+using Serilog;
+using Serilog.Debugging;
 
-namespace TrailerScopeBlazorWasm.Client
-{
-    public class Program
-    {
-        public static async Task Main(string[] args)
-        {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
+namespace TrailerScopeBlazorWasm.Client {
+	public class Program {
+		public static async Task Main( string[] args ) {
+			// setup serilog
 
-            builder.Services.AddHttpClient("TrailerScopeBlazorWasm.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+			SelfLog.Enable( m => Console.Error.WriteLine( m ) );
 
-            // Supply HttpClient instances that include access tokens when making requests to the server project
-            builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TrailerScopeBlazorWasm.ServerAPI"));
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Debug()
+				.WriteTo.BrowserConsole()
+				.CreateLogger();
 
-            builder.Services.AddApiAuthorization();
+			try {
+				var builder = WebAssemblyHostBuilder.CreateDefault( args );
+				builder.RootComponents.Add<App>( "#app" );
 
-            builder.Services.AddSingleton<IMovieInfoService, MovieInfoServiceApiClient>();
+				RegisterServices( builder );
 
-            builder.Services.AddMudServices();
+				await builder.Build().RunAsync();
+			 } catch (Exception ex) {
+				Log.Fatal( ex, "An exception occurred while creating the WASM host" );
+				throw;
+			}
+		}
 
-            await builder.Build().RunAsync();
-        }
-    }
+		private static void RegisterServices( WebAssemblyHostBuilder builder ) {
+			builder.Services.AddHttpClient( "TrailerScopeBlazorWasm.ServerAPI", client => client.BaseAddress = new Uri( builder.HostEnvironment.BaseAddress ) )
+				.AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+			// Supply HttpClient instances that include access tokens when making requests to the server project
+			builder.Services.AddScoped( sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient( "TrailerScopeBlazorWasm.ServerAPI" ) );
+
+			builder.Services.AddApiAuthorization();
+			ServiceProvider x = builder.Services.BuildServiceProvider();
+
+			builder.Services.AddSingleton<IMovieInfoService>( new MovieInfoServiceApiClient( new Uri( builder.HostEnvironment.BaseAddress ), x ) );
+
+
+			builder.Services.AddMudServices();
+
+		}
+	}
 }
