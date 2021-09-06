@@ -11,7 +11,8 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/TrailerScopeBlazorWasm/Server/bin/Debug/net5.0/TrailerScopeBlazorWasm.Server.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            //"cwd": "${workspaceFolder}",
+            "cwd": "{workspaceFolder}",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",

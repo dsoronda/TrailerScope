@@ -12,8 +12,7 @@ namespace TrailerScopeBlazorWasm.Server
 			//using var serviceProvider = services.BuildServiceProvider( new ServiceProviderOptions() { } );
 			AppSettings appSettings = new();
 			options.GetSection(nameof(AppSettings)).Bind(appSettings);
-
-
+			
 			//services.AddSingleton<IMovieSearchService, Services.MemoryMovieSearchService>();
 			//services.AddSingleton<IMovieSearchService, LiteDbMovieSearchService>();
 
