@@ -11,11 +11,11 @@ using System.Linq;
 
 namespace TrailerScope.Services.ImdbApiService
 {
-    public class MovieInfoServiceProvider : IMovieInfoService
+    public class MovieSearchServiceProvider : IMovieSearchService
     {
         private readonly string _apiKey;
 
-        public MovieInfoServiceProvider(string apiKey)
+        public MovieSearchServiceProvider(string apiKey)
         {
             _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
         }
@@ -24,7 +24,7 @@ namespace TrailerScope.Services.ImdbApiService
 
         public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync(string title)
         {
-            // throw new NotImplementedException();          
+            // throw new NotImplementedException();
             var apiLib = GetApiLib();
 
             // Title Data

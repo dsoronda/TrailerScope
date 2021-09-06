@@ -5,7 +5,7 @@ using TrailerScope.Domain.Entities;
 
 namespace TrailerScope.Contracts.Services
 {
-    public interface IMovieInfoService
+    public interface IMovieSearchService
     {
         /// <summary>
         /// Search Movies by title

@@ -49,7 +49,7 @@ namespace TrailerScopeBlazorWasm.Client {
 			builder.Services.AddApiAuthorization();
 			ServiceProvider x = builder.Services.BuildServiceProvider();
 
-			builder.Services.AddSingleton<IMovieInfoService>( new MovieInfoServiceApiClient( new Uri( builder.HostEnvironment.BaseAddress ), x ) );
+			builder.Services.AddSingleton<IMovieSearchService>( new MovieSearchServiceApiClient( new Uri( builder.HostEnvironment.BaseAddress ), x ) );
 
 
 			builder.Services.AddMudServices();

@@ -40,7 +40,7 @@ namespace TrailerScope.Services.ImdbApiServiceUnitTest {
 		public async Task ServiceProvider_FindBy() {
 			var movie_title = "spider-man";
 
-			var provider = new MovieInfoServiceProvider( this.api_key );
+			var provider = new MovieSearchServiceProvider( this.api_key );
 			var result = await provider.SearchByTitleAsync( movie_title );
 			result.IsSuccess.Should().BeTrue();
 

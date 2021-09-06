@@ -14,11 +14,11 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 	[ApiController]
 	[Route( "/api/v1/[controller]" )]
 	public class MoviesController : ControllerBase {
-		private readonly IMovieInfoService movieInfoService;
+		private readonly IMovieSearchService movieSearchService;
 		private readonly ILogger<MoviesController> logger;
 
-		public MoviesController( IMovieInfoService movieInfoService, ILogger<MoviesController> logger ) {
-			this.movieInfoService = movieInfoService ?? throw new ArgumentNullException( nameof(movieInfoService) );
+		public MoviesController( IMovieSearchService movieSearchService, ILogger<MoviesController> logger ) {
+			this.movieSearchService = movieSearchService ?? throw new ArgumentNullException( nameof(movieSearchService) );
 			this.logger = logger ?? throw new ArgumentNullException( nameof(logger) );
 		}
 
@@ -30,7 +30,7 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 			var errorMsg = "Unable to fetch movies for search : {title}";
 
 			try {
-				var result = await movieInfoService.SearchByTitleAsync( title );
+				var result = await movieSearchService.SearchByTitleAsync( title );
 				if (result.IsSuccess) return Ok( result.Value );
 
 				logger.LogError( errorMsg, title );

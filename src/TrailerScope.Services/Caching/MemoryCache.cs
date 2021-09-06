@@ -13,4 +13,5 @@ namespace TrailerScope.Services.Caching
 
         public void AddItem(string key, T item) => cache.Add(key,item);
     }
+
 }

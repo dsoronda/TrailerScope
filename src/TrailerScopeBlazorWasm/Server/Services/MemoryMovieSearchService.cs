@@ -7,7 +7,7 @@ using TrailerScope.Contracts.Services;
 using TrailerScope.Domain.Entities;
 
 namespace TrailerScopeBlazorWasm.Server.Services {
-	public class MemoryMovieInfoService :IMovieInfoService {
+	public class MemoryMovieSearchService :IMovieSearchService {
 		private List<MovieInfo> movies = new() {
 			new MovieInfo() {
 				Title = "spider-man",

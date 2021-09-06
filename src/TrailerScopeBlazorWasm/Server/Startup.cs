@@ -11,7 +11,6 @@ using System.Linq;
 using TrailerScopeBlazorWasm.Server.Data;
 using TrailerScopeBlazorWasm.Server.Models;
 using Microsoft.OpenApi.Models;
-using TrailerScope.Contracts.Services;
 
 namespace TrailerScopeBlazorWasm.Server
 {
@@ -29,8 +28,7 @@ namespace TrailerScopeBlazorWasm.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -46,15 +44,13 @@ namespace TrailerScopeBlazorWasm.Server
 
             services.AddSwaggerGen(c =>
             {
-	            c.SwaggerDoc("v1", new OpenApiInfo { Title = "_1", Version = "v1" });
+	            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api specification", Version = "v1" });
             });
 
-            RegisterMyServices( services );
+            ServicesHelper.RegisterMyServices( services , Configuration);
         }
 
-        private void RegisterMyServices( IServiceCollection services ) {
-	        services.AddSingleton<IMovieInfoService, Services.MemoryMovieInfoService>();
-        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -92,8 +88,8 @@ namespace TrailerScopeBlazorWasm.Server
                 endpoints.MapFallbackToFile("index.html");
             });
         }
-        
-        
-        
+
+
+
     }
 }

@@ -12,13 +12,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TrailerScopeBlazorWasm.Client.Services {
-	public class MovieInfoServiceApiClient : IMovieInfoService {
+	public class MovieSearchServiceApiClient : IMovieSearchService {
 		private readonly Url serverBase;
 		private readonly FlurlClient client;
-		private readonly ILogger<MovieInfoServiceApiClient> logger;
+		private readonly ILogger<MovieSearchServiceApiClient> logger;
 
-		public MovieInfoServiceApiClient( Url serverBase, IServiceProvider serviceProvider ) {
-			logger = serviceProvider.GetService<ILogger<MovieInfoServiceApiClient>>();
+		public MovieSearchServiceApiClient( Url serverBase, IServiceProvider serviceProvider ) {
+			logger = serviceProvider.GetService<ILogger<MovieSearchServiceApiClient>>();
 
 			//logger = serviceProvider.GetService(typeof(ILogger));
 
