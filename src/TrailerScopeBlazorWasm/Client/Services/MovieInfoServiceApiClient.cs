@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using FluentResults;
 using TrailerScope.Contracts.Services;
@@ -22,7 +24,7 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 
 			//this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
 			this.serverBase = serverBase ?? throw new ArgumentNullException( nameof( serverBase ) );
-			
+
 			this.client = new FlurlClient( serverBase )
 				// 	.WithOAUthBearerToken(token))
 				// .Configure(settings => ...)
@@ -38,16 +40,22 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 				// .GetJsonAsync<IEnumerable<MovieInfo>>()
 				;
 
+				if (webResult.StatusCode == (int)HttpStatusCode.NotFound) {
+					return Result.Ok<IEnumerable<MovieInfo>>(Enumerable.Empty<MovieInfo>() );
+				}
+
 				logger.LogInformation( $"MovieInfoServiceApiClient - got response {webResult.ResponseMessage} with statuscode {webResult.StatusCode}" );
 				if (webResult.ResponseMessage.IsSuccessStatusCode) {
 					return Result.Ok<IEnumerable<MovieInfo>>( await webResult.GetJsonAsync<IEnumerable<MovieInfo>>() );
 				}
 				return Result.Fail<IEnumerable<MovieInfo>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
-			} catch (System.Exception ex) {
-				logger.LogError( ex, "MovieInfoServiceApiClient - Error whie fetching data for title {title}", title );
-				return Result.Fail<IEnumerable<MovieInfo>>( new Error() );
 			}
-
+			//catch (System.Exception ex) {
+			catch (FlurlHttpException ex) 		//	} when (ex.Call. == System.Net.HttpStatusCode.Forbidden){
+			{
+				logger.LogError( ex, "MovieInfoServiceApiClient - Error while fetching data for title {title}", title );
+				return Result.Fail<IEnumerable<MovieInfo>>( new Error(ex.Message) );
+			}
 		}
 	}
 }
