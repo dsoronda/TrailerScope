@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -15,12 +15,13 @@ namespace TrailerScopeBlazorWasm.Server {
 	public class Program {
 		public static void Main( string[] args ) {
 			Log.Logger = new LoggerConfiguration()
-				//.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+				//.MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Debug)
 				.Enrich.FromLogContext()
 				//.Enrich.WithCorrelationId()
 				//.Enrich.WithProcessId()
 				//.Enrich.WithThreadId()
 				//.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] PID:{ProcessId} TID:{ThreadId} {Message:lj}{NewLine}{Exception}")
+				.WriteTo.Console()
 				.CreateLogger();
 
 			var IMDbApiKey = Environment.GetEnvironmentVariable( "IMDbApiKey" );
@@ -28,6 +29,7 @@ namespace TrailerScopeBlazorWasm.Server {
 
 			var litedBPath = TrailerScope.Services.LiteDb.ConnectionStringHelper.GetDbPath();
 			if (litedBPath.IsNullOrEmpty()) throw new Exception( $"Missing {nameof(AppSettings.LiteDbConnectionString)}" );
+			Log.Logger.Information( "Using db path : {litedBPath}", litedBPath );
 
 			var other = new List<string>() {
 				$"{nameof(AppSettings)}:{nameof(AppSettings.LiteDbConnectionString)}={litedBPath}",
@@ -36,7 +38,12 @@ namespace TrailerScopeBlazorWasm.Server {
 
 			var builder = CreateHostBuilder( args, other.ToArray() );
 			var host = builder.Build();
+			Log.Logger.Information( "Starting host runner");
+
 			host.Run();
+			Log.Logger.Information( "Host started" );
+
+
 		}
 
 		public static IHostBuilder CreateHostBuilder( string[] args, string[] otherKeys ) =>

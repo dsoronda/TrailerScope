@@ -15,6 +15,6 @@ namespace TrailerScope.Services.LiteDb
 				? Environment.GetEnvironmentVariable( LiteDbEnviromentVariable )
 				: ( Environment.OSVersion.Platform == PlatformID.Unix )
 					? $"{Environment.GetEnvironmentVariable( "HOME" )}/trailerscope.litedb"
-					: string.Empty;
+					: "trailerscope.litedb";
 	}
 }

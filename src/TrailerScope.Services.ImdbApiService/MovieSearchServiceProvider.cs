@@ -9,47 +9,39 @@ using TrailerScope.Contracts.Services;
 using TrailerScope.Domain.Entities;
 using System.Linq;
 
-namespace TrailerScope.Services.ImdbApiService
-{
-    public class MovieSearchServiceProvider : IMovieSearchService
-    {
-        private readonly string _apiKey;
+namespace TrailerScope.Services.ImdbApiService {
+	public class MovieSearchServiceProvider : IMovieSearchService {
+		private readonly string _apiKey;
 
-        public MovieSearchServiceProvider(string apiKey)
-        {
-            _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
-        }
+		public MovieSearchServiceProvider( string apiKey ) {
+			_apiKey = apiKey ?? throw new ArgumentNullException( nameof( apiKey ) );
+		}
 
-        private ApiLib GetApiLib() => new ApiLib(_apiKey);
+		private ApiLib GetApiLib() => new ApiLib( _apiKey );
 
-        public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync(string title)
-        {
-            // throw new NotImplementedException();
-            var apiLib = GetApiLib();
+		public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync( string title ) {
+			// throw new NotImplementedException();
+			var apiLib = GetApiLib();
 
-            // Title Data
-            var data = await apiLib.SearchTitleAsync(title);
-            if (!string.IsNullOrWhiteSpace(data.ErrorMessage)) return Result.Fail<IEnumerable<MovieInfo>>(data.ErrorMessage);
+			// Title Data
+			var data = await apiLib.SearchTitleAsync( title );
+			if (!string.IsNullOrWhiteSpace( data.ErrorMessage )) return Result.Fail<IEnumerable<MovieInfo>>( data.ErrorMessage );
 
-            var list = data.ToMovieInfoList();
-            return Result.Ok<IEnumerable<MovieInfo>>(list);
-        }
-    }
+			var list = data.ToMovieInfoList();
+			return Result.Ok<IEnumerable<MovieInfo>>( list );
+		}
+	}
 
-    internal static class SearchDataToMovieInfoAdapter
-    {
-        public static IEnumerable<MovieInfo> ToMovieInfoList(this SearchData data)
-        {
-            return data.Results.Select(x => new MovieInfo()
-            {
-                ImdbId = x.Id,
-                Title = x.Title,
-                Description = x.Description,
-                Poster = x.Image,
-                ReleaseYear = x.Description.Contains(')')
-                    ? Convert.ToInt16(x.Description.Substring(0, x.Description.IndexOf(')')).Remove('('))
-                    : 0
-            });
-        }
-    }
+	internal static class SearchDataToMovieInfoAdapter {
+		public static IEnumerable<MovieInfo> ToMovieInfoList( this SearchData data ) => data.Results
+			.Select( x => new MovieInfo() {
+				ImdbId = x.Id,
+				Title = x.Title,
+				Description = x.Description,
+				Poster = x.Image,
+				ReleaseYear = ( x.Description.StartsWith( '(' ) && x.Description.Contains( ')' ) )
+					? Convert.ToInt32( x.Description.Substring( 0, x.Description.IndexOf( ')' ) ).Replace( "(", "" ) )
+					: 0
+			} ).ToList();
+	}
 }
