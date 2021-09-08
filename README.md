@@ -49,14 +49,15 @@ NOTE: Try to remember and briefly document the decisions you made and why you ma
 ### TODO : How do I get set up
 
 * Summary of set up
-    - Add api key for IMDb-api as enviroment variable "imdb-api-key" (secure store)
+    - Add api key for IMDb-api as enviroment variable "IMDbApiKey" (secure store)
         - on Linux create file in home folder named `imdb_api_key.txt` and put there api key (as single line)
+    - Add Enviroment variable `TrailerScopeLiteDb` with path where to create LiteDb (ie. on Windows `d:\data\trailerscope.litedb`)
 
 * Configuration
 * Dependencies
     - External Movie API [IMDb-API](https://imdb-api.com)
     - TODO : Youtube API 
-* Database configuration - Not required, using embeded nosql db
+* Database configuration - Not required, using embeded LiteDb document db
 * How to run tests - See setup
 * Deployment instructions
     - git clone

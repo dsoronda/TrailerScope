@@ -1,35 +1,46 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{858C24CA-DD5A-46B0-BA44-A92760591FCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.Services.ImdbApiService", "src\TrailerScope.Services.ImdbApiService\TrailerScope.Services.ImdbApiService.csproj", "{630DD108-79AE-4A0B-A462-758278B31308}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Services.ImdbApiService", "src\TrailerScope.Services.ImdbApiService\TrailerScope.Services.ImdbApiService.csproj", "{630DD108-79AE-4A0B-A462-758278B31308}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{66D4CC07-205C-4297-854C-4E825E20C5C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.Services.ImdbApiServiceUnitTest", "tests\TrailerScope.Services.ImdbApiServiceUnitTest\TrailerScope.Services.ImdbApiServiceUnitTest.csproj", "{B86A9D3D-54A2-4671-91F6-D732AD3C9C96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Services.ImdbApiServiceUnitTest", "tests\TrailerScope.Services.ImdbApiServiceUnitTest\TrailerScope.Services.ImdbApiServiceUnitTest.csproj", "{B86A9D3D-54A2-4671-91F6-D732AD3C9C96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.Domain", "src\TrailerScope.Domain\TrailerScope.Domain.csproj", "{37957BF0-C557-445E-B50A-885E3E8AF0DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Domain", "src\TrailerScope.Domain\TrailerScope.Domain.csproj", "{37957BF0-C557-445E-B50A-885E3E8AF0DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.Contracts", "src\TrailerScope.Contracts\TrailerScope.Contracts.csproj", "{4696C01D-8AF1-423F-BAB5-004115B839C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Contracts", "src\TrailerScope.Contracts\TrailerScope.Contracts.csproj", "{4696C01D-8AF1-423F-BAB5-004115B839C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.Services", "src\TrailerScope.Services\TrailerScope.Services.csproj", "{271599F1-6514-4C14-A543-F987FC383849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Services", "src\TrailerScope.Services\TrailerScope.Services.csproj", "{271599F1-6514-4C14-A543-F987FC383849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.ServicesUnitTests", "tests\TrailerScope.ServicesUnitTests\TrailerScope.ServicesUnitTests.csproj", "{F4B6D57E-839F-4E7D-B5A3-3123A1F386BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.ServicesUnitTests", "tests\TrailerScope.ServicesUnitTests\TrailerScope.ServicesUnitTests.csproj", "{F4B6D57E-839F-4E7D-B5A3-3123A1F386BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlazorWasm", "BlazorWasm", "{BED8B6B5-1E1C-40A6-9EA9-248FCD2FBF6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScopeBlazorWasm.Shared", "src\TrailerScopeBlazorWasm\Shared\TrailerScopeBlazorWasm.Shared.csproj", "{6696EB9B-FA4C-4A4E-9A91-A2DB95963E14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScopeBlazorWasm.Shared", "src\TrailerScopeBlazorWasm\Shared\TrailerScopeBlazorWasm.Shared.csproj", "{6696EB9B-FA4C-4A4E-9A91-A2DB95963E14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScopeBlazorWasm.Server", "src\TrailerScopeBlazorWasm\Server\TrailerScopeBlazorWasm.Server.csproj", "{FD0CF939-04C7-417B-BFFF-1F843AE1FE60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScopeBlazorWasm.Server", "src\TrailerScopeBlazorWasm\Server\TrailerScopeBlazorWasm.Server.csproj", "{FD0CF939-04C7-417B-BFFF-1F843AE1FE60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScopeBlazorWasm.Client", "src\TrailerScopeBlazorWasm\Client\TrailerScopeBlazorWasm.Client.csproj", "{C34B73AD-B70F-4E23-A1C9-A5C2FF45A1D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScopeBlazorWasm.Client", "src\TrailerScopeBlazorWasm\Client\TrailerScopeBlazorWasm.Client.csproj", "{C34B73AD-B70F-4E23-A1C9-A5C2FF45A1D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.RazorLib", "src\TrailerScope.RazorLib\TrailerScope.RazorLib.csproj", "{656150DF-CEAD-4D24-9E9A-AB28CB0F8B0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.RazorLib", "src\TrailerScope.RazorLib\TrailerScope.RazorLib.csproj", "{656150DF-CEAD-4D24-9E9A-AB28CB0F8B0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailerScope.Services.LiteDb", "src\TrailerScope.Services.LiteDb\TrailerScope.Services.LiteDb.csproj", "{92011A35-0037-4CAC-B009-294D182FADF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Services.LiteDb", "src\TrailerScope.Services.LiteDb\TrailerScope.Services.LiteDb.csproj", "{92011A35-0037-4CAC-B009-294D182FADF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B5F4B177-1C68-4799-822A-4FEB1F690016}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitconfig = .gitconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		omnisharp.json = omnisharp.json
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +50,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{630DD108-79AE-4A0B-A462-758278B31308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -177,6 +185,9 @@ Global
 		{92011A35-0037-4CAC-B009-294D182FADF6}.Release|x86.ActiveCfg = Release|Any CPU
 		{92011A35-0037-4CAC-B009-294D182FADF6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{630DD108-79AE-4A0B-A462-758278B31308} = {858C24CA-DD5A-46B0-BA44-A92760591FCA}
 		{B86A9D3D-54A2-4671-91F6-D732AD3C9C96} = {66D4CC07-205C-4297-854C-4E825E20C5C9}
@@ -189,5 +200,8 @@ Global
 		{C34B73AD-B70F-4E23-A1C9-A5C2FF45A1D5} = {BED8B6B5-1E1C-40A6-9EA9-248FCD2FBF6B}
 		{656150DF-CEAD-4D24-9E9A-AB28CB0F8B0A} = {858C24CA-DD5A-46B0-BA44-A92760591FCA}
 		{92011A35-0037-4CAC-B009-294D182FADF6} = {858C24CA-DD5A-46B0-BA44-A92760591FCA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88A89F0C-D971-435D-8C93-3668980D829A}
 	EndGlobalSection
 EndGlobal
