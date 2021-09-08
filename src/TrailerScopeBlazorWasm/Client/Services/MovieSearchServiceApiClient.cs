@@ -10,9 +10,12 @@ using Flurl;
 using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using TrailerScope.RazorLib.Services;
 
 namespace TrailerScopeBlazorWasm.Client.Services {
-	public class MovieSearchServiceApiClient : IMovieSearchService {
+
+
+	public class MovieSearchServiceApiClient : IWasmMovieSearchApiService { 
 		private readonly Url serverBase;
 		private readonly FlurlClient client;
 		private readonly ILogger<MovieSearchServiceApiClient> logger;
@@ -29,6 +32,17 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 				// 	.WithOAUthBearerToken(token))
 				// .Configure(settings => ...)
 				;
+		}
+
+		public async Task<Result< IEnumerable<string>>> GetAllSearches() {
+			Url url = client.BaseUrl.AppendPathSegment( "/api/v1/movies/search_history" );
+			var webResult = await url.GetAsync();
+
+			logger.LogInformation( $"Search history - got response {webResult.ResponseMessage} with statuscode {webResult.StatusCode}" );
+			if (webResult.ResponseMessage.IsSuccessStatusCode) {
+				return Result.Ok<IEnumerable<string>>( await webResult.GetJsonAsync<IEnumerable<string>>() );
+			}
+			return Result.Fail<IEnumerable<string>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
 		}
 
 		public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync( string title ) {

@@ -14,7 +14,6 @@ namespace TrailerScope.Services.ImdbApiServiceUnitTest {
 
 		[SetUp]
 		public void Setup() {
-			// TODO : Get api key
 			api_key = GetApiKey();
 		}
 

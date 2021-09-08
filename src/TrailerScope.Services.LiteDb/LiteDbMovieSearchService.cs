@@ -7,6 +7,8 @@ using FluentResults;
 using TrailerScope.Contracts.Services;
 using TrailerScope.Domain.Entities;
 using TrailerScope.Services.Caching;
+using System.Linq;
+using LiteDB;
 
 namespace TrailerScope.Services.LiteDb {
 	public class LiteDbMovieSearchService : IMovieSearchService, ISearchTitleCacheService {
@@ -36,5 +38,7 @@ namespace TrailerScope.Services.LiteDb {
 			item.Title = item.Title.ToLowerInvariant();
 			dbManager.SearchTitleResultcollection.Insert(  item );
 		}
+
+		public IEnumerable<string> GetCachedSearchTitles() => dbManager.SearchTitleResultcollection.FindAll().Select( x => x.Title.ToLowerInvariant() ).ToList();
 	}
 }

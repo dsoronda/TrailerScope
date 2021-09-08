@@ -1,0 +1,48 @@
+@page "/movies/search_history"
+@inject ISnackbar Snackbar
+
+<h3>Search history</h3>
+
+@if(Titles.Any())
+{
+<ul>
+	@foreach (var item in Titles)
+	{
+		<li>@item</li>
+	}
+</ul>
+}
+
+@code {
+
+	[Inject] Services.IWasmMovieSearchApiService _searchService { get; set; }
+
+	[Inject] ILogger<MovieSearch> logger { get; set; }
+
+	private List<string> Titles { get; set; } = new List<string>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Snackbar.Add($"Fetching data.", Severity.Info);
+
+		try
+		{
+
+			var result = await _searchService.GetAllSearches();
+			if (result.IsFailed)
+			{
+				Snackbar.Add($"Unable to retrive search history.", Severity.Error);
+				return;
+			}
+			Titles.AddRange( result.Value );
+			Snackbar.Add($"Got {Titles.Count} items.", Severity.Success);
+
+		}
+		catch (Exception ex)
+		{
+			Snackbar.Add($"Got exception {ex.Message}", Severity.Error);
+
+		}
+		//return base.OnInitializedAsync();
+	}
+}

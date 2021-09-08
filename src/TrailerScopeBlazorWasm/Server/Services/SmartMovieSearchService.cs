@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using TrailerScope.Contracts.Services;
 using TrailerScope.Domain.Entities;
 using TrailerScope.Services.Caching;
+using System.Linq;
 using TrailerScope.Services.LiteDb;
 
 namespace TrailerScopeBlazorWasm.Server.Services {
@@ -23,6 +24,9 @@ namespace TrailerScopeBlazorWasm.Server.Services {
 			this.movieSearchCache = movieSearchCache ?? throw new ArgumentNullException( nameof( movieSearchCache ) );
 			this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
 		}
+
+		public IEnumerable<string> GetAllSearches() => movieSearchCache.GetCachedSearchTitles().ToList();
+
 
 		public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync( string title ) {
 			if (movieSearchCache.Contains( title )) {
@@ -41,8 +45,7 @@ namespace TrailerScopeBlazorWasm.Server.Services {
 		}
 	}
 
-	public interface IMovieSearchApiService : IMovieSearchService {
-	}
+	public interface IMovieSearchApiService : IMovieSearchService { 	}
 
 
 	public class MovieSearchApiService : TrailerScope.Services.ImdbApiService.MovieSearchServiceProvider, IMovieSearchApiService {

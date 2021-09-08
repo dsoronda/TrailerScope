@@ -1,4 +1,4 @@
-@page "/movie/search"
+@page "/movies/search"
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
 @using TrailerScope.Contracts.Services
@@ -47,12 +47,9 @@
 
 @code {
 
-	//[Inject] IMovieInfoService _searchService { get; set; }
-	[Inject]
-	IMovieSearchService _searchService { get; set; }
+	[Inject] Services.IWasmMovieSearchApiService _searchService { get; set; }
 
-	[Inject]
-	ILogger<MovieSearch> logger { get; set; }
+	[Inject] ILogger<MovieSearch> logger { get; set; }
 
 	//[Required,MinLength(1)] internal string SearchText { get; set; }
 	internal SearchQuery model = new();

@@ -13,6 +13,7 @@ using TrailerScope.Contracts.Services;
 using TrailerScopeBlazorWasm.Client.Services;
 using Serilog;
 using Serilog.Debugging;
+using TrailerScope.RazorLib.Services;
 
 namespace TrailerScopeBlazorWasm.Client {
 	public class Program {
@@ -49,7 +50,7 @@ namespace TrailerScopeBlazorWasm.Client {
 			builder.Services.AddApiAuthorization();
 			ServiceProvider x = builder.Services.BuildServiceProvider();
 
-			builder.Services.AddSingleton<IMovieSearchService>( new MovieSearchServiceApiClient( new Uri( builder.HostEnvironment.BaseAddress ), x ) );
+			builder.Services.AddSingleton<IWasmMovieSearchApiService>( new MovieSearchServiceApiClient( new Uri( builder.HostEnvironment.BaseAddress ), x ) );
 
 
 			builder.Services.AddMudServices();

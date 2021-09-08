@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 
 using TrailerScope.Contracts.Services;
 using TrailerScope.Domain.Entities;
+using TrailerScope.Services.Caching;
 
 namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 	// [Authorize]
@@ -19,10 +20,12 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 	[Route( "/api/v1/[controller]" )]
 	public class MoviesController : ControllerBase {
 		private readonly IMovieSearchService movieSearchService;
+		private readonly ISearchTitleCacheService cache;
 		private readonly ILogger<MoviesController> logger;
 
-		public MoviesController( IMovieSearchService movieSearchService, ILogger<MoviesController> logger ) {
+		public MoviesController( IMovieSearchService movieSearchService, Services.IMovieSearchCache cache, ILogger<MoviesController> logger ) {
 			this.movieSearchService = movieSearchService ?? throw new ArgumentNullException( nameof( movieSearchService ) );
+			this.cache = cache ?? throw new ArgumentNullException( nameof( cache ) );
 			this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
 		}
 
@@ -44,6 +47,9 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 				return StatusCode( StatusCodes.Status500InternalServerError, value: errorMsg );
 			}
 		}
+
+		[HttpGet( "search_history" )]
+		public ActionResult<IEnumerable<string>> GetSearchList() => cache.GetCachedSearchTitles().ToList<string>();
 
 		[HttpGet( "{id}" )]
 		public ActionResult<MovieInfo> GetMovieInfo( [FromQuery] string imdbId ) {
