@@ -19,25 +19,25 @@ namespace TrailerScopeBlazorWasm.Server.Services {
 		private readonly IMovieSearchCache movieSearchCache;
 		private readonly ILogger<SmartMovieSearchService> logger;
 
-		public SmartMovieSearchService( IMovieSearchApiService movieSearchApiService, IMovieSearchCache movieSearchCache , ILogger<SmartMovieSearchService> logger ) {
+		public SmartMovieSearchService( IMovieSearchApiService movieSearchApiService, IMovieSearchCache movieSearchCache, ILogger<SmartMovieSearchService> logger ) {
 			this.movieSearchApiService = movieSearchApiService ?? throw new ArgumentNullException( nameof( movieSearchApiService ) );
 			this.movieSearchCache = movieSearchCache ?? throw new ArgumentNullException( nameof( movieSearchCache ) );
 			this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
 		}
 
-		public IEnumerable<string> GetAllSearches() => movieSearchCache.GetCachedSearchTitles().ToList();
+		public IEnumerable<SearchTitleResult> GetAllSearches() => movieSearchCache.GetCachedSearchTitles().ToList();
 
 
 		public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync( string title ) {
 			if (movieSearchCache.Contains( title )) {
-				logger.LogInformation( $"{nameof(SmartMovieSearchService)} - {nameof(SmartMovieSearchService.SearchByTitleAsync)} : Cache hit for [{title}]" );
-				return Result.Ok<IEnumerable<MovieInfo>>( movieSearchCache.GetItem( title ).Movies ).WithSuccess("From cache");
+				logger.LogInformation( $"{nameof( SmartMovieSearchService )} - {nameof( SmartMovieSearchService.SearchByTitleAsync )} : Cache hit for [{title}]" );
+				return Result.Ok<IEnumerable<MovieInfo>>( movieSearchCache.GetItem( title ).Movies ).WithSuccess( "From cache" );
 			}
 
 			var apiResult = await movieSearchApiService.SearchByTitleAsync( title );
 			if (apiResult.IsFailed) return apiResult;
 
-			movieSearchCache.AddItem( title.ToLowerInvariant(), new SearchTitleResult() {Title= title.ToLowerInvariant(), Movies = apiResult.Value } );
+			movieSearchCache.AddItem( title.ToLowerInvariant(), new SearchTitleResult() { Title = title.ToLowerInvariant(), Movies = apiResult.Value } );
 
 			logger.LogInformation( $"{nameof( SmartMovieSearchService )} - {nameof( SmartMovieSearchService.SearchByTitleAsync )} : Cache miss for [{title}], data fetchs from API and stored into Cache" );
 
@@ -45,7 +45,7 @@ namespace TrailerScopeBlazorWasm.Server.Services {
 		}
 	}
 
-	public interface IMovieSearchApiService : IMovieSearchService { 	}
+	public interface IMovieSearchApiService : IMovieSearchService { }
 
 
 	public class MovieSearchApiService : TrailerScope.Services.ImdbApiService.MovieSearchServiceProvider, IMovieSearchApiService {

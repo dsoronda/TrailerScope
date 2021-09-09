@@ -14,8 +14,7 @@ using TrailerScope.RazorLib.Services;
 
 namespace TrailerScopeBlazorWasm.Client.Services {
 
-
-	public class MovieSearchServiceApiClient : IWasmMovieSearchApiService { 
+	public class MovieSearchServiceApiClient : IWasmMovieSearchApiService {
 		private readonly Url serverBase;
 		private readonly FlurlClient client;
 		private readonly ILogger<MovieSearchServiceApiClient> logger;
@@ -34,42 +33,42 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 				;
 		}
 
-		public async Task<Result< IEnumerable<string>>> GetAllSearches() {
-			Url url = client.BaseUrl.AppendPathSegment( "/api/v1/movies/search_history" );
+		public async Task<Result<IReadOnlyList<SearchTitleResult>>> GetAllSearches() {
+			var url = client.BaseUrl.AppendPathSegment( "/api/v1/movies/search_history" );
 			var webResult = await url.GetAsync();
 
 			logger.LogInformation( $"Search history - got response {webResult.ResponseMessage} with statuscode {webResult.StatusCode}" );
 			if (webResult.ResponseMessage.IsSuccessStatusCode) {
-				return Result.Ok<IEnumerable<string>>( await webResult.GetJsonAsync<IEnumerable<string>>() );
+				return Result.Ok( await webResult.GetJsonAsync<IReadOnlyList<SearchTitleResult>>() );
 			}
-			return Result.Fail<IEnumerable<string>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
+			return Result.Fail<IReadOnlyList<SearchTitleResult>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
 		}
 
-		public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync( string title ) {
+		public async Task<Result<IReadOnlyList<MovieInfo>>> SearchByTitleAsync( string title ) {
 			try {
-				Url bla = client.BaseUrl
+				var url = client.BaseUrl
 							   .AppendPathSegment( "/api/v1/movies" )
 							   .SetQueryParam( "title", title );
-				var webResult = await bla.AllowHttpStatus( "404" ).GetAsync();
+				var webResult = await url.AllowHttpStatus( "404" ).GetAsync();
 				// .GetJsonAsync<IEnumerable<MovieInfo>>()
 				;
 
-				if (webResult.StatusCode == (int)HttpStatusCode.NotFound) {
-					return Result.Ok<IEnumerable<MovieInfo>>(Enumerable.Empty<MovieInfo>() );
+				if (webResult.StatusCode == (int) HttpStatusCode.NotFound) {
+					return Result.Ok<IReadOnlyList<MovieInfo>>( new List<MovieInfo>() );
 				}
 
 				logger.LogInformation( $"MovieInfoServiceApiClient - got response {webResult.ResponseMessage} with statuscode {webResult.StatusCode}" );
 				if (webResult.ResponseMessage.IsSuccessStatusCode) {
-					return Result.Ok<IEnumerable<MovieInfo>>( await webResult.GetJsonAsync<IEnumerable<MovieInfo>>() );
+					return Result.Ok( await webResult.GetJsonAsync<IReadOnlyList<MovieInfo>>() );
 				}
-				return Result.Fail<IEnumerable<MovieInfo>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
+				return Result.Fail<IReadOnlyList<MovieInfo>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
 			}
-			//catch (System.Exception ex) {
-			catch (FlurlHttpException ex) 		//	} when (ex.Call. == System.Net.HttpStatusCode.Forbidden){
+			catch (FlurlHttpException ex)       //	} when (ex.Call. == System.Net.HttpStatusCode.Forbidden){
 			{
 				logger.LogError( ex, "MovieInfoServiceApiClient - Error while fetching data for title {title}", title );
-				return Result.Fail<IEnumerable<MovieInfo>>( new Error(ex.Message) );
+				return Result.Fail<IReadOnlyList<MovieInfo>>( new Error( ex.Message ) );
 			}
 		}
+
 	}
 }

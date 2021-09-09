@@ -6,6 +6,6 @@ using TrailerScope.Domain.Entities;
 namespace TrailerScope.Services.Caching
 {
 	public interface ISearchTitleCacheService : ICache<SearchTitleResult> {
-		IEnumerable<string> GetCachedSearchTitles();
+		IEnumerable<SearchTitleResult> GetCachedSearchTitles();
 	}
 }

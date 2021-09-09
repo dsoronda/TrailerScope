@@ -49,7 +49,7 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 		}
 
 		[HttpGet( "search_history" )]
-		public ActionResult<IEnumerable<string>> GetSearchList() => cache.GetCachedSearchTitles().ToList<string>();
+		public ActionResult<IEnumerable<SearchTitleResult>> GetSearchList() => cache.GetCachedSearchTitles().ToList();
 
 		[HttpGet( "{id}" )]
 		public ActionResult<MovieInfo> GetMovieInfo( [FromQuery] string imdbId ) {

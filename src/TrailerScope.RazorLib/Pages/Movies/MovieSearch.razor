@@ -1,9 +1,4 @@
 @page "/movies/search"
-@using Microsoft.AspNetCore.Components.Forms
-@using System.ComponentModel.DataAnnotations
-@using TrailerScope.Contracts.Services
-@using TrailerScope.Domain.Entities
-@inject ISnackbar Snackbar
 
 
 <h3>Search movies</h3>
@@ -35,9 +30,10 @@
 
 		<ul>
 
-			@foreach (var movieInfo in movies)
+			@foreach (MovieInfo movieInfo in movies)
 			{
-				<li>@movieInfo.Title (@movieInfo.ReleaseYear) - @movieInfo.Description</li>
+				
+				@*<li>@movieInfo.Title (@movieInfo.ReleaseYear) - @movieInfo.Description</li>*@
 			}
 
 		</ul>
@@ -46,62 +42,7 @@
 
 
 @code {
+ 
 
-	[Inject] Services.IWasmMovieSearchApiService _searchService { get; set; }
-
-	[Inject] ILogger<MovieSearch> logger { get; set; }
-
-	//[Required,MinLength(1)] internal string SearchText { get; set; }
-	internal SearchQuery model = new();
-
-	//MudForm form;
-	IEnumerable<MovieInfo> movies;
-	bool HaveMovies => movies != null && movies!.Any();
-
-	private void InvalidSubmit(EditContext context)
-	{
-		Snackbar.Add($"Invalid submit trigered", Severity.Info);
-	}
-
-
-	private async Task OnValidSubmit(EditContext context)
-	{
-		// note : this is workaround when invalid submit trigers validsubmit
-		if(!context.Validate() || string.IsNullOrWhiteSpace(model.SearchText)) return;
-
-		await SearchMovies(model.SearchText);
-	//success = true;
-		StateHasChanged();
-	}
-
-	private async Task SearchMovies(string title)
-	{
-		logger.LogInformation("got search request for title: {SearchText}", title);
-
-		var result = await _searchService.SearchByTitleAsync(title);
-
-		logger.LogInformation("got response : {result.IsSuccess}", result.IsSuccess);
-
-		if (result.IsSuccess && result.Value.Any())
-		{
-			movies = result.Value;
-			return;
-		}
-
-		if (result.IsFailed)
-		{
-			logger.LogInformation("got reasons: {Reasons}", result.Reasons.First());
-			Snackbar.Add($"Fail: Reason: {result.Reasons.First()}", Severity.Error);
-		}
-
-	// handle success with not found data
-		Snackbar.Add($"Nothing found", Severity.Warning);
-	}
-
-	internal class SearchQuery
-	{
-		[Required, MinLength(1)]
-		internal string SearchText { get; set; }
-	}
 
 }

@@ -1,0 +1,18 @@
+@page "/movies/info"
+@using TrailerScope.Contracts.Services
+@using TrailerScope.Domain.Entities
+@inject ISnackbar Snackbar
+
+
+<h3>TODO : Movie info</h3>
+
+
+
+@code {
+
+	[Inject] Services.IWasmMovieSearchApiService _searchService { get; set; }
+
+	[Inject] ILogger<MovieSearch> logger { get; set; }
+
+
+}

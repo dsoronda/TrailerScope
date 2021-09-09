@@ -39,6 +39,6 @@ namespace TrailerScope.Services.LiteDb {
 			dbManager.SearchTitleResultcollection.Insert(  item );
 		}
 
-		public IEnumerable<string> GetCachedSearchTitles() => dbManager.SearchTitleResultcollection.FindAll().Select( x => x.Title.ToLowerInvariant() ).ToList();
+		public IEnumerable<SearchTitleResult> GetCachedSearchTitles() => dbManager.SearchTitleResultcollection.FindAll().ToList();
 	}
 }

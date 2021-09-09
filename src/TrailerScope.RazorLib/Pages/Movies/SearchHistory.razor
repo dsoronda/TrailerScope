@@ -1,48 +1,43 @@
 @page "/movies/search_history"
 @inject ISnackbar Snackbar
 
-<h3>Search history</h3>
+<h3><MudIcon Icon="@Icons.Material.Outlined.SavedSearch" Title="Search" />Search history</h3>
 
-@if(Titles.Any())
+@if (SearchResult.Any())
 {
-<ul>
-	@foreach (var item in Titles)
-	{
-		<li>@item</li>
-	}
-</ul>
+	@*<ul>
+		@foreach (var item in SearchResult)
+		{
+		<li>
+		@item.Title [@item.Movies.Count()]
+		</li>
+		}
+		</ul>
+	*@
+	<MudTreeView Items="@TreeItems">
+		<ItemTemplate>
+			<MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
+				<Content>
+					<MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild" />
+					<MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@Color.Secondary" />
+					@if (context.IsMovieInfo)
+				{
+					<MudLink Href="@($"/movies/info/{context.ImdbId}")" Underline="Underline.Always">@context.Text</MudLink>
+				}
+				else
+				{
+
+					<MudText>@context.Text</MudText>
+				}
+			</Content>
+		</MudTreeViewItem>
+	</ItemTemplate>
+</MudTreeView>
+
 }
 
 @code {
 
-	[Inject] Services.IWasmMovieSearchApiService _searchService { get; set; }
 
-	[Inject] ILogger<MovieSearch> logger { get; set; }
 
-	private List<string> Titles { get; set; } = new List<string>();
-
-	protected override async Task OnInitializedAsync()
-	{
-		Snackbar.Add($"Fetching data.", Severity.Info);
-
-		try
-		{
-
-			var result = await _searchService.GetAllSearches();
-			if (result.IsFailed)
-			{
-				Snackbar.Add($"Unable to retrive search history.", Severity.Error);
-				return;
-			}
-			Titles.AddRange( result.Value );
-			Snackbar.Add($"Got {Titles.Count} items.", Severity.Success);
-
-		}
-		catch (Exception ex)
-		{
-			Snackbar.Add($"Got exception {ex.Message}", Severity.Error);
-
-		}
-		//return base.OnInitializedAsync();
-	}
 }
