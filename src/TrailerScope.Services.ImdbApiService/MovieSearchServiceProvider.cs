@@ -30,6 +30,16 @@ namespace TrailerScope.Services.ImdbApiService {
 			var list = data.ToMovieInfoList();
 			return Result.Ok<IEnumerable<MovieInfo>>( list );
 		}
+
+		/// <summary>
+		/// Get extra movie informatio from IMDb-API
+		/// </summary>
+		/// <param name="imdbId"></param>
+		/// <returns></returns>
+		public Task<Result<MovieInfo>> GetMovieInfo( string imdbId ) {
+			// TODO : check api usage and implement this
+			throw new NotImplementedException();
+		}
 	}
 
 	internal static class SearchDataToMovieInfoAdapter {

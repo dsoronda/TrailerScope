@@ -70,5 +70,18 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 			}
 		}
 
+
+		public async Task<Result<MovieInfo>> GetMovieInfo( string movieImdbId ) {
+			var url = client.BaseUrl.AppendPathSegment( "/api/v1/movies/" )
+				.SetQueryParams(new { movieImdbId } )
+				;
+			var webResult = await url.GetAsync();
+
+			logger.LogInformation( $"Search movie - got response {webResult.ResponseMessage} with statuscode {webResult.StatusCode}" );
+			if (webResult.ResponseMessage.IsSuccessStatusCode) {
+				return Result.Ok( await webResult.GetJsonAsync<MovieInfo>() );
+			}
+			return Result.Fail<MovieInfo>( webResult.ResponseMessage.ReasonPhrase ?? "" );
+		}
 	}
 }

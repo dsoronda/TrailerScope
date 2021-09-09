@@ -1,18 +1,18 @@
-@page "/movies/info"
-@using TrailerScope.Contracts.Services
-@using TrailerScope.Domain.Entities
-@inject ISnackbar Snackbar
-
+@page "/movies/info/{imdb_id}"
 
 <h3>TODO : Movie info</h3>
 
-
+@if (MovieInfoData is null)
+{
+	<h2>
+		Movie not found !!!
+	</h2>
+}
+else
+{
+	<p>@MovieInfoData.Title</p>
+}
 
 @code {
-
-	[Inject] Services.IWasmMovieSearchApiService _searchService { get; set; }
-
-	[Inject] ILogger<MovieSearch> logger { get; set; }
-
 
 }

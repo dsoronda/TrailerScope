@@ -26,8 +26,7 @@ namespace TrailerScopeBlazorWasm.Server.Services {
 		}
 
 		public IEnumerable<SearchTitleResult> GetAllSearches() => movieSearchCache.GetCachedSearchTitles().ToList();
-
-
+	
 		public async Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync( string title ) {
 			if (movieSearchCache.Contains( title )) {
 				logger.LogInformation( $"{nameof( SmartMovieSearchService )} - {nameof( SmartMovieSearchService.SearchByTitleAsync )} : Cache hit for [{title}]" );
@@ -42,6 +41,11 @@ namespace TrailerScopeBlazorWasm.Server.Services {
 			logger.LogInformation( $"{nameof( SmartMovieSearchService )} - {nameof( SmartMovieSearchService.SearchByTitleAsync )} : Cache miss for [{title}], data fetchs from API and stored into Cache" );
 
 			return apiResult;
+		}
+
+		public Task<Result<MovieInfo>> GetMovieInfo( string imdbId ) {
+			// TODO implement this
+			throw new NotImplementedException();
 		}
 	}
 

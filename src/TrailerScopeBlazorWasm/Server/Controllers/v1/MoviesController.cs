@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using FluentResults;
+
 using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +31,7 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 			this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
 		}
 
-		[HttpGet]
+		[HttpGet("search_title")]
 		public async Task<ActionResult<IEnumerable<MovieInfo>>> SearchByTitle( [FromQuery] string title ) {
 			if (string.IsNullOrWhiteSpace( title )) return BadRequest( "Missing title" );
 
@@ -51,9 +53,11 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 		[HttpGet( "search_history" )]
 		public ActionResult<IEnumerable<SearchTitleResult>> GetSearchList() => cache.GetCachedSearchTitles().ToList();
 
-		[HttpGet( "{id}" )]
-		public ActionResult<MovieInfo> GetMovieInfo( [FromQuery] string imdbId ) {
+		[HttpGet( "{imdbId}" )]
+		public async Task<ActionResult<MovieInfo>> GetMovieInfo([FromRoute] string imdbId ) {
 			if (string.IsNullOrWhiteSpace( imdbId )) return BadRequest( "Empty imdb id" );
+
+			Result<MovieInfo> result =  await movieSearchService.GetMovieInfo( imdbId );
 
 			return new MovieInfo { ImdbId = imdbId, Description = "test" };
 		}

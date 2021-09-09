@@ -12,5 +12,6 @@ namespace TrailerScope.RazorLib.Services {
 	public interface IWasmMovieSearchApiService {
 		Task<Result<IReadOnlyList<SearchTitleResult>>> GetAllSearches();
 		Task<Result<IReadOnlyList<MovieInfo>>> SearchByTitleAsync( string title );
+		Task<Result<MovieInfo>> GetMovieInfo( string movieImdbId );
 	}
 }

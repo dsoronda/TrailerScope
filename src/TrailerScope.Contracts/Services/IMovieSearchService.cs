@@ -12,7 +12,8 @@ namespace TrailerScope.Contracts.Services
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        public Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync(string title);
+        Task<Result<IEnumerable<MovieInfo>>> SearchByTitleAsync(string title);
 
-    }
+		Task<Result<MovieInfo>> GetMovieInfo( string imdbId );
+	}
 }

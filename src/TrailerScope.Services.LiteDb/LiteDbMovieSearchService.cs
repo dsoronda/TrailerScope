@@ -36,9 +36,16 @@ namespace TrailerScope.Services.LiteDb {
 
 		public void AddItem( string key, SearchTitleResult item ) {
 			item.Title = item.Title.ToLowerInvariant();
-			dbManager.SearchTitleResultcollection.Insert(  item );
+			dbManager.SearchTitleResultcollection.Insert( item );
 		}
 
 		public IEnumerable<SearchTitleResult> GetCachedSearchTitles() => dbManager.SearchTitleResultcollection.FindAll().ToList();
+
+		public Task<Result<MovieInfo>> GetMovieInfo( string imdbId ) {
+			var info = dbManager.MovieInfoCollection.FindOne( x => x.ImdbId == imdbId );
+
+			return ( info is not null ) ? Task.FromResult( Result.Ok( info ) ) :
+			Task.FromResult( Result.Fail<MovieInfo>( $"Movie with Imdb ID {imdbId} not in db" ) );
+		}
 	}
 }

@@ -46,5 +46,12 @@ namespace TrailerScope.Services.ImdbApiServiceUnitTest {
 			result.Value.Should()
 				.Contain( x => x.Title.Contains( movie_title, StringComparison.InvariantCultureIgnoreCase ) );
 		}
+
+
+		[Test]
+		public async Task Get_MovieInfo_By_IMDbID() {
+			// TODO : implement test
+			Assert.Fail("not implemented");
+		}
 	}
 }
