@@ -45,7 +45,7 @@ namespace TrailerScope.RazorLib.Pages.Movies {
 				foreach (var movieInfo in search.Movies) {
 					var subItem = new TreeItemData( movieInfo.Title ) {
 						Icon = Icons.Custom.Brands.YouTube,
-						ImdbId = movieInfo.ImdbId,
+						ImdbId = movieInfo.IMDbId,
 						IsMovieInfo = true,
 					};
 					item.TreeItems.Add( subItem );

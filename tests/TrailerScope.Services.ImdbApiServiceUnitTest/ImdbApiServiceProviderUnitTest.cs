@@ -1,9 +1,11 @@
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using FluentAssertions;
 using NUnit.Framework.Constraints;
+using TrailerScope.Domain.Entities;
 using TrailerScope.Services.ImdbApiService;
 
 namespace TrailerScope.Services.ImdbApiServiceUnitTest {
@@ -51,7 +53,15 @@ namespace TrailerScope.Services.ImdbApiServiceUnitTest {
 		[Test]
 		public async Task Get_MovieInfo_By_IMDbID() {
 			// TODO : implement test
-			Assert.Fail("not implemented");
+			var movie_imdb_id = "tt0145487"; // spiderman
+
+			var provider = new MovieSearchServiceProvider( this.api_key );
+			var result = await provider.GetMovieInfo( movie_imdb_id );
+			result.IsSuccess.Should().BeTrue();
+
+			MovieInfo movie = result.Value;
+			movie.IMDbId.Should().Be( movie_imdb_id );
+			movie.TrailerInfo.Should().NotBeNull();
 		}
 	}
 }

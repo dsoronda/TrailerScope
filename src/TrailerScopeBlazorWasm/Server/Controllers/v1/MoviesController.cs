@@ -59,7 +59,8 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 
 			Result<MovieInfo> result =  await movieSearchService.GetMovieInfo( imdbId );
 
-			return new MovieInfo { ImdbId = imdbId, Description = "test" };
+			if(result.IsSuccess) return result.Value;
+			return NotFound($"IMDb have no inforamtion for required movie id {imdbId}");
 		}
 	}
 }

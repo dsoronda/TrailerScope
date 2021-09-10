@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using TrailerScope.RazorLib.Services;
 
 namespace TrailerScopeBlazorWasm.Client.Services {
-
 	public class MovieSearchServiceApiClient : IWasmMovieSearchApiService {
 		private readonly Url serverBase;
 		private readonly FlurlClient client;
@@ -25,7 +24,7 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 			//logger = serviceProvider.GetService(typeof(ILogger));
 
 			//this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
-			this.serverBase = serverBase ?? throw new ArgumentNullException( nameof( serverBase ) );
+			this.serverBase = serverBase ?? throw new ArgumentNullException( nameof(serverBase) );
 
 			this.client = new FlurlClient( serverBase )
 				// 	.WithOAUthBearerToken(token))
@@ -41,14 +40,15 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 			if (webResult.ResponseMessage.IsSuccessStatusCode) {
 				return Result.Ok( await webResult.GetJsonAsync<IReadOnlyList<SearchTitleResult>>() );
 			}
+
 			return Result.Fail<IReadOnlyList<SearchTitleResult>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
 		}
 
 		public async Task<Result<IReadOnlyList<MovieInfo>>> SearchByTitleAsync( string title ) {
 			try {
 				var url = client.BaseUrl
-							   .AppendPathSegment( "/api/v1/movies" )
-							   .SetQueryParam( "title", title );
+					.AppendPathSegment( "/api/v1/movies" )
+					.SetQueryParam( "title", title );
 				var webResult = await url.AllowHttpStatus( "404" ).GetAsync();
 				// .GetJsonAsync<IEnumerable<MovieInfo>>()
 				;
@@ -61,10 +61,10 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 				if (webResult.ResponseMessage.IsSuccessStatusCode) {
 					return Result.Ok( await webResult.GetJsonAsync<IReadOnlyList<MovieInfo>>() );
 				}
+
 				return Result.Fail<IReadOnlyList<MovieInfo>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
-			}
-			catch (FlurlHttpException ex)       //	} when (ex.Call. == System.Net.HttpStatusCode.Forbidden){
-			{
+			} catch (FlurlHttpException ex) {
+				//	} when (ex.Call. == System.Net.HttpStatusCode.Forbidden){
 				logger.LogError( ex, "MovieInfoServiceApiClient - Error while fetching data for title {title}", title );
 				return Result.Fail<IReadOnlyList<MovieInfo>>( new Error( ex.Message ) );
 			}
@@ -72,15 +72,16 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 
 
 		public async Task<Result<MovieInfo>> GetMovieInfo( string movieImdbId ) {
-			var url = client.BaseUrl.AppendPathSegment( "/api/v1/movies/" )
-				.SetQueryParams(new { movieImdbId } )
+			var url = client.BaseUrl.AppendPathSegment( $"/api/v1/movies/{movieImdbId}" )
+				//.SetQueryParams(new { movieImdbId } )
 				;
-			var webResult = await url.GetAsync();
+			var webResult = await url.AllowHttpStatus( "404" ).GetAsync();
 
 			logger.LogInformation( $"Search movie - got response {webResult.ResponseMessage} with statuscode {webResult.StatusCode}" );
 			if (webResult.ResponseMessage.IsSuccessStatusCode) {
 				return Result.Ok( await webResult.GetJsonAsync<MovieInfo>() );
 			}
+
 			return Result.Fail<MovieInfo>( webResult.ResponseMessage.ReasonPhrase ?? "" );
 		}
 	}

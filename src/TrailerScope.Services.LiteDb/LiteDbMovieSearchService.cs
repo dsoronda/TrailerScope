@@ -12,9 +12,9 @@ using LiteDB;
 
 namespace TrailerScope.Services.LiteDb {
 	public class LiteDbMovieSearchService : IMovieSearchService, ISearchTitleCacheService {
-		private readonly LiteDbManager dbManager;
+		private readonly ILiteDbManager dbManager;
 
-		public LiteDbMovieSearchService( LiteDbManager dbManager ) {
+		public LiteDbMovieSearchService( ILiteDbManager dbManager ) {
 			this.dbManager = dbManager ?? throw new ArgumentNullException( nameof( dbManager ) );
 		}
 
@@ -29,20 +29,20 @@ namespace TrailerScope.Services.LiteDb {
 				? Result.Ok( GetItem( title ).Movies )
 				: Result.Fail<IEnumerable<MovieInfo>>( "Not found" ) );
 
-		public bool Contains( string key ) => dbManager.SearchTitleResultcollection.Exists( x => x.Title.Equals( key ) );
+		public bool Contains( string key ) => dbManager.SearchTitleResultCollection.Exists( x => x.Title.Equals( key ) );
 
-		public SearchTitleResult GetItem( string key ) => dbManager.SearchTitleResultcollection.FindOne(
+		public SearchTitleResult GetItem( string key ) => dbManager.SearchTitleResultCollection.FindOne(
 			x => x.Title == key );
 
 		public void AddItem( string key, SearchTitleResult item ) {
 			item.Title = item.Title.ToLowerInvariant();
-			dbManager.SearchTitleResultcollection.Insert( item );
+			dbManager.SearchTitleResultCollection.Insert( item );
 		}
 
-		public IEnumerable<SearchTitleResult> GetCachedSearchTitles() => dbManager.SearchTitleResultcollection.FindAll().ToList();
+		public IEnumerable<SearchTitleResult> GetCachedSearchTitles() => dbManager.SearchTitleResultCollection.FindAll().ToList();
 
 		public Task<Result<MovieInfo>> GetMovieInfo( string imdbId ) {
-			var info = dbManager.MovieInfoCollection.FindOne( x => x.ImdbId == imdbId );
+			var info = dbManager.MovieInfoCollection.FindOne( x => x.IMDbId == imdbId );
 
 			return ( info is not null ) ? Task.FromResult( Result.Ok( info ) ) :
 			Task.FromResult( Result.Fail<MovieInfo>( $"Movie with Imdb ID {imdbId} not in db" ) );

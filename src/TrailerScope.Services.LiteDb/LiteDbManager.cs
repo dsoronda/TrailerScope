@@ -6,12 +6,18 @@ using TrailerScope.Contracts.Services;
 using TrailerScope.Domain.Entities;
 
 namespace TrailerScope.Services.LiteDb {
-	public class LiteDbManager : IDisposable {
+	public interface ILiteDbManager
+	{
+		ILiteCollection<MovieInfo> MovieInfoCollection { get; }
+		ILiteCollection<SearchTitleResult> SearchTitleResultCollection { get; }
+	}
+
+	public class LiteDbManager :  IDisposable, ILiteDbManager {
 		private readonly string dbPath;
 		private readonly LiteDatabase liteDbDatabase;
 
 		public ILiteCollection<MovieInfo> MovieInfoCollection { get; private set; }
-		public ILiteCollection<SearchTitleResult> SearchTitleResultcollection { get; private set; }
+		public ILiteCollection<SearchTitleResult> SearchTitleResultCollection { get; private set; }
 
 		public LiteDbManager( string dbPath ) {
 			this.dbPath = string.IsNullOrWhiteSpace( dbPath )
@@ -29,13 +35,14 @@ namespace TrailerScope.Services.LiteDb {
 			// Index document using document Name property
 			MovieInfoCollection.EnsureIndex( x => x.Title, unique: false );
 
-
 			// Get a collection (or create, if doesn't exist)
-			SearchTitleResultcollection = liteDbDatabase.GetCollection<SearchTitleResult>( nameof( SearchTitleResult ) );
+			SearchTitleResultCollection = liteDbDatabase.GetCollection<SearchTitleResult>( nameof( SearchTitleResult ) );
 			// Index document using document Name property
-			SearchTitleResultcollection.EnsureIndex( x => x.Title, unique: true );
+			SearchTitleResultCollection.EnsureIndex( x => x.Title, unique: true );
 		}
 
 		public void Dispose() => liteDbDatabase.Dispose();
 	}
+
+
 }

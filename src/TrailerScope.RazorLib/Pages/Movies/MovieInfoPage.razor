@@ -5,12 +5,26 @@
 @if (MovieInfoData is null)
 {
 	<h2>
-		Movie not found !!!
-	</h2>
+	Movie not found !!!
+</h2>
 }
 else
 {
 	<p>@MovieInfoData.Title</p>
+	@if (!string.IsNullOrWhiteSpace(MovieInfoData.Poster))
+	{
+		<img src="@MovieInfoData.Poster" alt="Movie poster" style="width: 100px;" />
+	}
+
+	@if (!string.IsNullOrWhiteSpace(MovieInfoData.TrailerInfo?.ThumbnailUrl))
+	{
+		<img src="@MovieInfoData.TrailerInfo.ThumbnailUrl" alt="Trailer thumbnail" />
+	}
+
+	@if (!string.IsNullOrWhiteSpace(MovieInfoData.TrailerInfo?.LinkEmbed))
+	{
+		<iframe src="@MovieInfoData.TrailerInfo.LinkEmbed" title="Trailer"></iframe>
+	}
 }
 
 @code {

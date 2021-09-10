@@ -21,16 +21,19 @@ namespace TrailerScope.RazorLib.Pages.Movies {
 
 		public MovieInfo MovieInfoData{ get; set; }
 
-		public string imdb_id { get; set; }
+		[Parameter]public string imdb_id { get; set; }
 
 		protected override async Task OnInitializedAsync() {
 			if (string.IsNullOrWhiteSpace( imdb_id ))
-				Snackbar.Add( $"Invalid submit trigered", Severity.Error );
+				Snackbar.Add( $"Invalid submit triggerred", Severity.Error );
 
 			FluentResults.Result<MovieInfo> result = await _searchService.GetMovieInfo( imdb_id );
 
 			if (result.IsSuccess) {
 				MovieInfoData = result.Value;
+				Snackbar.Add( "Got movie info",Severity.Normal );
+			} else {
+				Snackbar.Add( $"{result.Reasons.First()}", Severity.Error );
 			}
 			//return base.OnInitializedAsync();
 		}
