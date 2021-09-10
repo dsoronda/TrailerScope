@@ -22,18 +22,27 @@ namespace TrailerScope.RazorLib.Pages.Movies {
 		public MovieInfo MovieInfoData{ get; set; }
 
 		[Parameter]public string imdb_id { get; set; }
+		string h3_Title = "Movie info";
+		bool movieNotFound = false;
 
 		protected override async Task OnInitializedAsync() {
 			if (string.IsNullOrWhiteSpace( imdb_id ))
 				Snackbar.Add( $"Invalid submit triggerred", Severity.Error );
+			try {
 
-			FluentResults.Result<MovieInfo> result = await _searchService.GetMovieInfo( imdb_id );
+				FluentResults.Result<MovieInfo> result = await _searchService.GetMovieInfo( imdb_id );
 
-			if (result.IsSuccess) {
-				MovieInfoData = result.Value;
-				Snackbar.Add( "Got movie info",Severity.Normal );
-			} else {
-				Snackbar.Add( $"{result.Reasons.First()}", Severity.Error );
+				if (result.IsSuccess) {
+					MovieInfoData = result.Value;
+					h3_Title = $"{MovieInfoData.Title} ({MovieInfoData.ReleaseYear})";
+					Snackbar.Add( "Got movie info", Severity.Normal );
+				} else {
+					movieNotFound = true;
+					Snackbar.Add( $"{result.Reasons.First()}", Severity.Error );
+				}
+			} catch (Exception ex) {
+				movieNotFound = true;
+				logger.LogError( ex, $"Fetching data for {imdb_id} failed" );
 			}
 			//return base.OnInitializedAsync();
 		}

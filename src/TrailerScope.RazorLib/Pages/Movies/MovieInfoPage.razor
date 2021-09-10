@@ -1,32 +1,58 @@
 @page "/movies/info/{imdb_id}"
+@inject IDialogService DialogService
 
-<h3>TODO : Movie info</h3>
+<h3>@h3_Title</h3>
 
 @if (MovieInfoData is null)
 {
-	<h2>
-	Movie not found !!!
-</h2>
+	<h4>Fetching data</h4>
+	<MudProgressCircular Color="Color.Default" Indeterminate="true" />
+} else if (movieNotFound) {
+	<h4>Sorry, I found no information on IMDb</h4>
 }
-else
+
+@if(MovieInfoData is not null)
 {
-	<p>@MovieInfoData.Title</p>
+	<MudPaper Width="90%">
+		<MudContainer>
+
+			<MudCard>
+				<MudCardHeader>@MovieInfoData.Title</MudCardHeader>
+				<MudCardMedia Image="@MovieInfoData.TrailerInfo?.ThumbnailUrl" Height="200" />
+				<MudCardContent>
+					<MudText Typo="Typo.h5">Description</MudText>
+					<MudText Typo="Typo.body2">@MovieInfoData.Description</MudText>
+					@*<MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>*@
+				</MudCardContent>
+				<MudCardActions>
+					<MudButton Variant="Variant.Filled" Color="Color.Secondary">Watch trailer</MudButton>
+
+					<MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+						Watch trailer
+					</MudButton>
+				</MudCardActions>
+			</MudCard>
+		</MudContainer>
+	</MudPaper>
+
 	@if (!string.IsNullOrWhiteSpace(MovieInfoData.Poster))
 	{
 		<img src="@MovieInfoData.Poster" alt="Movie poster" style="width: 100px;" />
 	}
 
-	@if (!string.IsNullOrWhiteSpace(MovieInfoData.TrailerInfo?.ThumbnailUrl))
-	{
-		<img src="@MovieInfoData.TrailerInfo.ThumbnailUrl" alt="Trailer thumbnail" />
-	}
-
-	@if (!string.IsNullOrWhiteSpace(MovieInfoData.TrailerInfo?.LinkEmbed))
-	{
-		<iframe src="@MovieInfoData.TrailerInfo.LinkEmbed" title="Trailer"></iframe>
-	}
 }
+
+
 
 @code {
 
+	private void OpenDialog()
+	{
+		var parameters = new DialogParameters();
+		parameters.Add(nameof(TrailerDialog.MovieTitle), MovieInfoData.Title);
+		parameters.Add(nameof(TrailerDialog.TrailerUrl), MovieInfoData.TrailerInfo.LinkEmbed);
+		DialogOptions fullScreen = new DialogOptions() { FullScreen = true, CloseButton = true };
+
+		DialogService.Show<TrailerDialog>("Movie trailer", parameters, options: fullScreen);
+	}
 }

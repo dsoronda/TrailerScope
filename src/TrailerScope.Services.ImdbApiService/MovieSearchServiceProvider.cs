@@ -15,7 +15,7 @@ namespace TrailerScope.Services.ImdbApiService {
 		private readonly string _apiKey;
 
 		public MovieSearchServiceProvider( string apiKey ) {
-			_apiKey = apiKey ?? throw new ArgumentNullException( nameof(apiKey) );
+			_apiKey = apiKey ?? throw new ArgumentNullException( nameof( apiKey ) );
 		}
 
 		private ApiLib GetApiLib() => new ApiLib( _apiKey );
@@ -50,25 +50,38 @@ namespace TrailerScope.Services.ImdbApiService {
 	}
 
 	internal static class SearchDataToMovieInfoAdapter {
-		public static IEnumerable<MovieInfo> ToMovieInfoList( this SearchData data ) => data.Results
-			.Select( x => new MovieInfo() {
-				IMDbId = x.Id,
-				Title = x.Title,
-				Description = x.Description,
-				Poster = x.Image,
-				ReleaseYear = ( x.Description.StartsWith( '(' ) && x.Description.Contains( ')' ) )
-					? Convert.ToInt32( x.Description.Substring( 0, x.Description.IndexOf( ')' ) ).Replace( "(", "" ) )
-					: 0
-			} ).ToList();
+		public static IEnumerable<MovieInfo> ToMovieInfoList( this SearchData data ) {
+			List<MovieInfo> list = new();
+
+			foreach (var item in data.Results) {
+				var movie = item.Adapt<MovieInfo>();
+				movie.IMDbId = item.Id;
+				movie.Poster = item.Image;
+				movie.ReleaseYear = GetYearFromDescription(item.Description );
+
+				list.Add( movie );
+			}
+
+			return list;
+		}
 
 		public static MovieInfo ToMovieInfo( this TrailerData data ) {
 			var info = data.Adapt<MovieInfo>();
 			//info.IMDbId = data.IMDbId;
-			info.ReleaseYear = Convert.ToInt32( data.Year );
+			info.ReleaseYear = ( !string.IsNullOrWhiteSpace( data.Year ) ) ? Convert.ToInt32( data.Year ) : 0;
 			info.Description = data.VideoDescription;
 			info.TrailerInfo = data.Adapt<ImdbTrailerData>();
-
 			return info;
+		}
+
+		internal static int GetYearFromDescription( string text ) {
+			int year = 0;
+			if (text.StartsWith( '(' ) && text.Contains( ')' )) {
+				var substring = text.Substring( 0, text.IndexOf( ')' ) );
+				var stringValue = substring.Replace( "(", "" );
+				int.TryParse( stringValue, out year );
+			}
+			return year;
 		}
 	}
 }

@@ -1,0 +1,24 @@
+<MudDialog>
+    <DialogContent >
+		<div style="height:600px">
+
+		@if (string.IsNullOrWhiteSpace(TrailerUrl)) {
+			<h1>missing trailer link</h1>
+		} else {
+			<iframe src="@TrailerUrl" title="Trailer" ></iframe>
+		}
+		</div>
+	</DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close" Color="Color.Secondary">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+	[Parameter] public string TrailerUrl { get; set; }
+	[Parameter] public string MovieTitle { get; set; }
+    //void Close() => MudDialog.Close(DialogResult.Ok(true));
+    void Close() => MudDialog.Cancel();
+}
+

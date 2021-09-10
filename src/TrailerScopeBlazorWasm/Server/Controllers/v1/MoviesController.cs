@@ -31,8 +31,8 @@ namespace TrailerScopeBlazorWasm.Server.Controllers.v1 {
 			this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
 		}
 
-		[HttpGet("search_title")]
-		public async Task<ActionResult<IEnumerable<MovieInfo>>> SearchByTitle( [FromQuery] string title ) {
+		[HttpGet("search_title/{title}")]
+		public async Task<ActionResult<IEnumerable<MovieInfo>>> SearchByTitle( [FromRoute] string title ) {
 			if (string.IsNullOrWhiteSpace( title )) return BadRequest( "Missing title" );
 
 			logger.LogInformation( "Got search request for : {title}", title );

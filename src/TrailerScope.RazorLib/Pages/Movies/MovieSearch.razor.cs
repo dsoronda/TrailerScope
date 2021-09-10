@@ -29,18 +29,9 @@ namespace TrailerScope.RazorLib.Pages.Movies {
 
 		bool HaveMovies => movies != null && movies!.Any();
 
-		private void InvalidSubmit( EditContext context ) {
-			Snackbar.Add( $"Invalid submit trigered", Severity.Info );
-		}
 
-		private async Task OnValidSubmit( EditContext context ) {
-			// note : this is workaround when invalid submit trigers validsubmit
-			if (!context.Validate() || string.IsNullOrWhiteSpace( model.SearchText )) return;
 
-			await SearchMovies( model.SearchText );
-			//success = true;
-			StateHasChanged();
-		}
+
 
 		private async Task SearchMovies( string title ) {
 			logger.LogInformation( "got search request for title: {SearchText}", title );

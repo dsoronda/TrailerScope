@@ -24,7 +24,7 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 			//logger = serviceProvider.GetService(typeof(ILogger));
 
 			//this.logger = logger ?? throw new ArgumentNullException( nameof( logger ) );
-			this.serverBase = serverBase ?? throw new ArgumentNullException( nameof(serverBase) );
+			this.serverBase = serverBase ?? throw new ArgumentNullException( nameof( serverBase ) );
 
 			this.client = new FlurlClient( serverBase )
 				// 	.WithOAUthBearerToken(token))
@@ -45,27 +45,27 @@ namespace TrailerScopeBlazorWasm.Client.Services {
 		}
 
 		public async Task<Result<IReadOnlyList<MovieInfo>>> SearchByTitleAsync( string title ) {
+			var url = client.BaseUrl
+						.AppendPathSegment( $"/api/v1/movies/search_title/{title}" )
+						//.SetQueryParam( "title", title )
+						;
 			try {
-				var url = client.BaseUrl
-					.AppendPathSegment( "/api/v1/movies" )
-					.SetQueryParam( "title", title );
+
 				var webResult = await url.AllowHttpStatus( "404" ).GetAsync();
-				// .GetJsonAsync<IEnumerable<MovieInfo>>()
-				;
 
 				if (webResult.StatusCode == (int) HttpStatusCode.NotFound) {
 					return Result.Ok<IReadOnlyList<MovieInfo>>( new List<MovieInfo>() );
 				}
 
 				logger.LogInformation( $"MovieInfoServiceApiClient - got response {webResult.ResponseMessage} with statuscode {webResult.StatusCode}" );
-				if (webResult.ResponseMessage.IsSuccessStatusCode) {
+
+				if (webResult.ResponseMessage.IsSuccessStatusCode)
 					return Result.Ok( await webResult.GetJsonAsync<IReadOnlyList<MovieInfo>>() );
-				}
 
 				return Result.Fail<IReadOnlyList<MovieInfo>>( webResult.ResponseMessage.ReasonPhrase ?? "" );
 			} catch (FlurlHttpException ex) {
 				//	} when (ex.Call. == System.Net.HttpStatusCode.Forbidden){
-				logger.LogError( ex, "MovieInfoServiceApiClient - Error while fetching data for title {title}", title );
+				logger.LogError( ex, "MovieInfoServiceApiClient - Error while fetching data for title {title}, URL {url}", title, url );
 				return Result.Fail<IReadOnlyList<MovieInfo>>( new Error( ex.Message ) );
 			}
 		}
