@@ -2,7 +2,13 @@
 
 TrailerScope is web SPA application with web API backend on which you can search for movie trailers.
 
-## Requiremenets
+## Licence
+
+All code and files holds Copyright by Dražen Šoronda (dsoronda@gmail.com).
+All commercial usage of code and code derivatives are STRICTLY prohibited !!!
+This is demo project and it should only be used as such.
+
+## Requirements
 
 - Use an API of an online movie database (e.g. IMDB or Rotten Tomatoes) (**Note** : both are payed services, will use https://imdb-api.com as free alternative)
 - Use an API of an online video service (e.g. YouTube or Vimeo) (requires google Account and Google API)
@@ -12,54 +18,38 @@ TrailerScope is web SPA application with web API backend on which you can search
 - Optionally create a web page that uses your own web API to search and show movies with trailers
 - Use the development language of the vacancy you are applying for
 
-Tips
-
-    Follow industry standards when building your own API
-    Showing a lot of embedded videos on your web page increases page load time significantly
-
-Bonus
-
-    Add the option to share trailers on social networks;
-    Make sure your website is secure and super fast;
-        - secure how ? require API key for requests or ?
-    Create a contact form to request a trailer for a movie;
-        - this should be on frontend with API backend
-    Surprise us! Build something we haven’t thought of or what you think is a valuable addition;
-
-NOTE: Try to remember and briefly document the decisions you made and why you made them. We can’t wait to pick your brain.
-
-
 ## Technology used
 
 * C# & Blazor
 * FluentResult
 * FluentValidator
-* FluentAsertion
+* FluentAssertion
 * DbLite as document db
+* Flurl API Client
+* SOLID principles
+* Caching with database backup
 
 ## External APIs
 
-- [IMDb-API](https://imdb-api.com) , key : ``
+- [IMDb-API](https://imdb-api.com) , key : `` ( since free tier is limited, create your own account )
     - [github src](https://github.com/IMDb-API/IMDbApiLib)
     - [nuget package](https://www.nuget.org/packages/IMDbApiLib)
     - [swagger](https://imdb-api.com/swagger/index.html)
 - [Youtube](https://developers.google.com/youtube/v3/docs/videos)
 - [The Open Movie Database](https://www.omdbapi.com/)
 
-### TODO : How do I get set up
+### How do I get set up project
 
-* Summary of set up
-    - Add api key for IMDb-api as enviroment variable "IMDbApiKey" (secure store)
-        - on Linux create file in home folder named `imdb_api_key.txt` and put there api key (as single line)
+* Set up requirements
+    - Add Enviroment variable `IMDbApiKey` with key for IMDb-API access
     - Add Enviroment variable `TrailerScopeLiteDb` with path where to create LiteDb (ie. on Windows `d:\data\trailerscope.litedb`)
-
-* Configuration
 * Dependencies
     - External Movie API [IMDb-API](https://imdb-api.com)
-    - TODO : Youtube API 
-* Database configuration - Not required, using embeded LiteDb document db
-* How to run tests - See setup
+* Database configuration - Not required, using embedded LiteDb Document db
+* How to run tests - setup Enviroment variables and run tests
 * Deployment instructions
-    - git clone
-    - dotnet build
-    - TODO: dontet run -p src/....
+~~~
+git clone
+dotnet build
+dotnet run --project src/TrailerScopeBlazorWasm/Server/
+~~~
