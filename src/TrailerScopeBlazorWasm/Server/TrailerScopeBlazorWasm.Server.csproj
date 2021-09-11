@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\tests\TrailerScope.Services.ImdbApiServiceUnitTest\TrailerScope.Services.ImdbApiServiceUnitTest.csproj" />
+    <ProjectReference Include="..\..\..\tests\TrailerScope.Services.ImdbApiServiceTest\TrailerScope.Services.ImdbApiServiceTest.csproj" />
     <ProjectReference Include="..\..\TrailerScope.Services.LiteDb\TrailerScope.Services.LiteDb.csproj" />
     <ProjectReference Include="..\Client\TrailerScopeBlazorWasm.Client.csproj" />
     <ProjectReference Include="..\Shared\TrailerScopeBlazorWasm.Shared.csproj" />

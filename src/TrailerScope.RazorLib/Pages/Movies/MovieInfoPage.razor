@@ -18,15 +18,12 @@
 
 			<MudCard>
 				<MudCardHeader>@MovieInfoData.Title</MudCardHeader>
-				<MudCardMedia Image="@MovieInfoData.TrailerInfo?.ThumbnailUrl" Height="200" />
+				<MudCardMedia Image="@MovieInfoData.TrailerInfo?.ThumbnailUrl" Height="480" />
 				<MudCardContent>
 					<MudText Typo="Typo.h5">Description</MudText>
 					<MudText Typo="Typo.body2">@MovieInfoData.Description</MudText>
-					@*<MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>*@
 				</MudCardContent>
 				<MudCardActions>
-					<MudButton Variant="Variant.Filled" Color="Color.Secondary">Watch trailer</MudButton>
-
 					<MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
 						Watch trailer
 					</MudButton>

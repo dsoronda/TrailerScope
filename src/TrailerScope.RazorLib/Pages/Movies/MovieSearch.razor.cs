@@ -18,8 +18,8 @@ namespace TrailerScope.RazorLib.Pages.Movies {
 		[Inject] ISnackbar Snackbar { get; set; }
 		[Inject] ILogger<MovieSearch> logger { get; set; }
 
-
 		internal SearchQuery model = new();
+
 		internal class SearchQuery {
 			[Required, MinLength( 1 )]
 			internal string SearchText { get; set; }
@@ -28,10 +28,6 @@ namespace TrailerScope.RazorLib.Pages.Movies {
 		IReadOnlyList<Domain.Entities.MovieInfo> movies;
 
 		bool HaveMovies => movies != null && movies!.Any();
-
-
-
-
 
 		private async Task SearchMovies( string title ) {
 			logger.LogInformation( "got search request for title: {SearchText}", title );

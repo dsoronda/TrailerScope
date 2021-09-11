@@ -9,7 +9,7 @@ using TrailerScope.Domain.Entities;
 using TrailerScope.Services.ImdbApiService;
 
 namespace TrailerScope.Services.ImdbApiServiceUnitTest {
-	public class ImdbApiServiceProviderUnitTest {
+	public class ImdbApiServiceProviderTest {
 		private string api_key = "";
 
 		private readonly string linux_api_key_file = $"{Environment.GetEnvironmentVariable( "HOME" )}//imdb_api_key.txt";

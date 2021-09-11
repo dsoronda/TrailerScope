@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Services.ImdbA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{66D4CC07-205C-4297-854C-4E825E20C5C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Services.ImdbApiServiceUnitTest", "tests\TrailerScope.Services.ImdbApiServiceUnitTest\TrailerScope.Services.ImdbApiServiceUnitTest.csproj", "{B86A9D3D-54A2-4671-91F6-D732AD3C9C96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Services.ImdbApiServiceTest", "tests\TrailerScope.Services.ImdbApiServiceTest\TrailerScope.Services.ImdbApiServiceTest.csproj", "{B86A9D3D-54A2-4671-91F6-D732AD3C9C96}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrailerScope.Domain", "src\TrailerScope.Domain\TrailerScope.Domain.csproj", "{37957BF0-C557-445E-B50A-885E3E8AF0DF}"
 EndProject

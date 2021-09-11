@@ -1,46 +1,44 @@
 @page "/movies/search"
 
-<h3><MudIcon Icon="@Icons.Material.Outlined.Search" Title="Search" />Search movies by title</h3>
+<h3><MudIcon Icon="@Icons.Material.Outlined.Search" Title="Search"/>Search movies by title</h3>
 
 <div style="max-width: 600px;">
 	<EditForm Model="@model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="InvalidSubmit">
-		<DataAnnotationsValidator />
+		<DataAnnotationsValidator/>
 		<MudCard>
 			<MudCardContent>
-				<MudTextField T="string" Label="Movie title" Required="true" @bind-Value="model.SearchText" RequiredError="Movie title is required!" />
+				<MudTextField T="string" Label="Movie title" Required="true" @bind-Value="model.SearchText" RequiredError="Movie title is required!"/>
 			</MudCardContent>
 			<MudCardActions>
 				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
 			</MudCardActions>
 		</MudCard>
-		<MudText Typo="Typo.body2" Align="Align.Center" Class="my-4">
-			Fill out the form correctly to see the success message.
-		</MudText>
+
 	</EditForm>
 
 </div>
-<br />
+<br/>
 
 @if (HaveMovies)
 {
-	<div>
-		<h3>Found movies</h3>
+	<h3>Found movies</h3>
 
-		<ul>
+	<MudPaper Width="600px">
+		<MudList Clickable="true">
 			@foreach (MovieInfo movieInfo in movies)
 			{
-				<li>
-					<a href="/movies/info/@movieInfo.IMDbId">
-						@movieInfo.Title (@movieInfo.ReleaseYear) - @movieInfo.Description
-					</a>
-				</li>
+				<a href="/movies/info/@movieInfo.IMDbId">
+					<MudListItem Text="@($"{movieInfo.Title} - ({movieInfo.Description})")" Icon="@Icons.Material.Filled.Movie"/>
+				</a>
+				@*<MudListItem Text="@($"{movieInfo.Title} - ({movieInfo.Description})")" Icon="@Icons.Material.Filled.Movie"/>*@
 			}
-		</ul>
-	</div>
+		</MudList>
+	</MudPaper>
 }
 
 
 @code {
+
 	private void InvalidSubmit(EditContext context)
 	{
 		Snackbar.Add($"Invalid submit trigered", Severity.Info);
@@ -48,11 +46,11 @@
 
 	private async Task OnValidSubmit(EditContext context)
 	{
-		// note : this is workaround when invalid submit trigers validsubmit
+	// note : this is workaround when invalid submit trigers validsubmit
 		if (!context.Validate() || string.IsNullOrWhiteSpace(model.SearchText)) return;
 
 		await SearchMovies(model.SearchText);
-		//success = true;
+	//success = true;
 		StateHasChanged();
 	}
 
